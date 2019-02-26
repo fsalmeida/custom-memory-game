@@ -10,7 +10,7 @@ class CongratsPopUp extends Component {
                     <h2>Parabéns! Você ganhou!</h2>
                     <div className="summary">
                         <p><span id="total-moves">{this.props.movements}</span> Movimentos</p>
-                        <p>Tempo: <span id="total-time"></span></p>
+                        <p>Tempo: <span id="total-time">{this.props.ellapsedTime}</span></p>
                         <p>Avaliação: <span id="star-rating" className="stars"></span></p>
                     </div>
                     <button id="play-again" onClick={this.props.handlePlayAgain}>Jogar novamente</button>

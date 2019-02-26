@@ -19,19 +19,39 @@ class Game extends Component {
         super(props);
     }
 
+    componentDidUpdate = () => {
+        if (this.state.endOfGame)
+            this.stopTimer();
+    }
+
     componentWillMount = () => {
         this.startNewGame();
     }
 
+    startTimer = () => {
+        if (this.state.gameStartTime == null) {
+            this.state.gameStartTime = new Date();
+            this.timerInterval = setInterval(() => this.setState({ ellapsedTime: new Date() - this.state.gameStartTime }), 200);
+        }
+    }
+
+    stopTimer = () => {
+        if (this.timerInterval != undefined && this.timerInterval != null)
+            clearInterval(this.timerInterval);
+    }
+
     startNewGame = () => {
+        this.stopTimer();
+
         this.setState({
+            gameStartTime: null,
             ellapsedTime: 0,
             endOfGame: false,
             allowGameInteration: true,
             movementCounter: 0,
             cards: this.getShuffledCards(),
             openCards: [],
-            missingMatches: game.length
+            missingMatches: 1//game.length
         });
     }
 
@@ -74,6 +94,8 @@ class Game extends Component {
 
     openCard = card => {
         if (this.state.allowGameInteration) {
+            this.startTimer();
+
             card.isOpen = true;
             this.state.openCards.push(card);
 
@@ -124,11 +146,28 @@ class Game extends Component {
         this.setState({ cards: this.state.cards, openCards: [], allowGameInteration: true });
     }
 
+    printEllapsedTime = () => {
+        function pad(n, z) {
+            z = z || 2;
+            return ('00' + n).slice(-z);
+        }
+
+        let time = this.state.ellapsedTime;
+
+        var ms = time % 1000;
+        time = (time - ms) / 1000;
+        var secs = time % 60;
+        time = (time - secs) / 60;
+        var mins = time % 60;
+
+        return pad(mins) + ':' + pad(secs);
+    }
+
     render() {
         return (
             <div className="container">
                 <header>
-                    <h1>Jogo da Memória - {this.state.ellapsedTime}</h1>
+                    <h1>Jogo da Memória</h1>
                 </header>
                 <section className="score-panel">
                     <ul className="stars">
@@ -136,16 +175,16 @@ class Game extends Component {
                         <li><i className="fa fa-star shine"></i></li>
                         <li><i className="fa fa-star shine"></i></li>
                     </ul>
-                    <div className="moves"><span className="counter"></span> Movimentos</div>
-                    <div className="timer"></div>
-                    <div className="restart">
+                    <div className="moves">{this.state.movementCounter}<span className="counter"></span> Movimentos</div>
+                    <div className="timer">{this.printEllapsedTime()}</div>
+                    <div className="restart" onClick={this.startNewGame}>
                         <i className="fa fa-repeat"></i>
                     </div>
                 </section>
                 <ul className="deck" id="card-deck">
                     {this.state.cards.map((card, index) => <Card key={index} text={card.text} toggle={this.handleCardClick} {...card} />)}
                 </ul>
-                {this.state.endOfGame ? (<CongratsPopUp movements={this.state.movementCounter} handlePlayAgain={this.startNewGame} />) : null}
+                {this.state.endOfGame ? (<CongratsPopUp movements={this.state.movementCounter} ellapsedTime={this.printEllapsedTime()} handlePlayAgain={this.startNewGame} />) : null}
             </div>
         );
     }
