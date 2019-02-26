@@ -198,13 +198,13 @@ h1 {
     }
 
     .deck .card.show {
-        font-size: 28px;
+        font-size: 20px;
     }
 
     .deck .card.match {
         cursor: default;
         background: #02ccba;
-        font-size: 28px;
+        font-size: 20px;
         animation-name: rubberBand;
         -webkit-backface-visibility: visible;
         backface-visibility: visible;
@@ -271,13 +271,13 @@ h1 {
      }
  
      .deck .card.show {
-         font-size: 16px;
+         font-size: 10px;
      }
  
      .deck .card.match {
          cursor: default;
          background: #02ccba;
-         font-size: 16px;
+         font-size: 10px;
          animation-name: rubberBand;
          -webkit-backface-visibility: visible;
          backface-visibility: visible;

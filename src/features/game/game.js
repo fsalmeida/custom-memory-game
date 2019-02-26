@@ -3,7 +3,18 @@ import './game.scss';
 import Card from './card'
 import CongratsPopUp from './congratsPopUp'
 
-const game1 = [
+const games = [
+[
+    { id: 'a', text: 'clima', textTranslation: 'weather' },
+    { id: 'b', text: 'ensolarado', textTranslation: 'sunny' },
+    { id: 'c', text: 'chuvoso', textTranslation: 'rainy' },
+    { id: 'd', text: 'nublado', textTranslation: 'cloudy' },
+    { id: 'e', text: 'nebuloso', textTranslation: 'foggy' },
+    { id: 'f', text: 'tempestuoso', textTranslation: 'stormy' },
+    { id: 'g', text: 'quente', textTranslation: 'hot' },
+    { id: 'h', text: 'frio', textTranslation: 'cold' }
+],
+[
     { id: 'a', text: 'livro', textTranslation: 'book' },
     { id: 'b', text: 'relogio', textTranslation: 'clock' },
     { id: 'c', text: 'parede', textTranslation: 'wall' },
@@ -12,9 +23,8 @@ const game1 = [
     { id: 'f', text: 'agua', textTranslation: 'water' },
     { id: 'g', text: 'cerveja', textTranslation: 'beer' },
     { id: 'h', text: 'alface', textTranslation: 'lettuce' }
-];
-
-const game2 = [
+],
+[
     { id: 'a', text: 'afobado', textTranslation: 'flustered' },
     { id: 'b', text: 'peruca', textTranslation: 'wig' },
     { id: 'c', text: 'horrível', textTranslation: 'awful' },
@@ -23,9 +33,9 @@ const game2 = [
     { id: 'f', text: 'terrível', textTranslation: 'dreadful' },
     { id: 'g', text: 'dedilhar', textTranslation: 'fiddle' },
     { id: 'h', text: 'risadinha', textTranslation: 'giggle' }
-];
+]];
 
-let game = game1;
+let game = games[0];
 
 class Game extends Component {
     constructor(props) {
@@ -54,15 +64,7 @@ class Game extends Component {
     }
 
     changeGame = (event) => {
-        switch (event.target.value) {
-            case "1":
-                game = game1;
-                break;
-            case "2":
-                game = game2;
-                break;
-        }
-
+		game = games[parseInt(event.target.value)];
         this.startNewGame();
     }
 
@@ -221,8 +223,12 @@ class Game extends Component {
                     {this.state.cards.map((card, index) => <Card key={index} text={card.text} toggle={this.handleCardClick} {...card} />)}
                 </ul>
                 <div className="game-selector">
-                    <span>Dificuldade: </span>
-                    <select onChange={this.changeGame}><option value="1">Facil</option><option value="2">Médio</option></select>
+                    <span>Game: </span>
+                    <select onChange={this.changeGame}>
+						<option value="0">1 - Easy</option>
+						<option value="1">2 - Easy</option>
+						<option value="2">3 - Hard</option>
+					</select>
                 </div>
                 {this.state.endOfGame ? (<CongratsPopUp movements={this.state.movementCounter} stars={this.getNumberOfStars()} ellapsedTime={this.printEllapsedTime()} handlePlayAgain={this.startNewGame} />) : null}
             </div>
