@@ -21,10 +21,6 @@ class Game extends Component {
 
     componentWillMount = () => {
         this.startNewGame();
-        setInterval(() => {
-            console.log(this.timerInstance)
-            this.setState({ ellapsedTime: this.timerInstance.ellapsed });
-        }, 1000);
     }
 
     startNewGame = () => {
