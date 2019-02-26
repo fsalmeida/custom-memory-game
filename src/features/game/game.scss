@@ -8,6 +8,15 @@ body {
     opacity: 1 !important;
 }
 
+.game-selector{
+    display: block;
+    clear: both;
+    
+    select{
+        margin-left: 5px;
+    }
+}
+
 .container {
     display: flex;
     flex-flow: column wrap;
@@ -189,13 +198,13 @@ h1 {
     }
 
     .deck .card.show {
-        font-size: 32px;
+        font-size: 28px;
     }
 
     .deck .card.match {
         cursor: default;
         background: #02ccba;
-        font-size: 32px;
+        font-size: 28px;
         animation-name: rubberBand;
         -webkit-backface-visibility: visible;
         backface-visibility: visible;

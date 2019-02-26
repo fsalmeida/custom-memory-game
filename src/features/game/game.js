@@ -3,7 +3,7 @@ import './game.scss';
 import Card from './card'
 import CongratsPopUp from './congratsPopUp'
 
-const game = [
+const game1 = [
     { id: 'a', text: 'livro', textTranslation: 'book' },
     { id: 'b', text: 'relogio', textTranslation: 'clock' },
     { id: 'c', text: 'parede', textTranslation: 'wall' },
@@ -13,6 +13,19 @@ const game = [
     { id: 'g', text: 'cerveja', textTranslation: 'beer' },
     { id: 'h', text: 'alface', textTranslation: 'lettuce' }
 ];
+
+const game2 = [
+    { id: 'a', text: 'afobado', textTranslation: 'flustered' },
+    { id: 'b', text: 'peruca', textTranslation: 'wig' },
+    { id: 'c', text: 'horrível', textTranslation: 'awful' },
+    { id: 'd', text: 'piscar', textTranslation: 'blink' },
+    { id: 'e', text: 'grupo', textTranslation: 'cluster' },
+    { id: 'f', text: 'terrível', textTranslation: 'dreadful' },
+    { id: 'g', text: 'dedilhar', textTranslation: 'fiddle' },
+    { id: 'h', text: 'risadinha', textTranslation: 'giggle' }
+];
+
+let game = game1;
 
 class Game extends Component {
     constructor(props) {
@@ -31,13 +44,26 @@ class Game extends Component {
     startTimer = () => {
         if (this.state.gameStartTime == null) {
             this.state.gameStartTime = new Date();
-            this.timerInterval = setInterval(() => this.setState({ ellapsedTime: new Date() - this.state.gameStartTime }), 200);
+            this.timerInterval = setInterval(() => this.setState({ ellapsedTime: new Date() - this.state.gameStartTime }), 1000);
         }
     }
 
     stopTimer = () => {
         if (this.timerInterval != undefined && this.timerInterval != null)
             clearInterval(this.timerInterval);
+    }
+
+    changeGame = (event) => {
+        switch (event.target.value) {
+            case "1":
+                game = game1;
+                break;
+            case "2":
+                game = game2;
+                break;
+        }
+
+        this.startNewGame();
     }
 
     startNewGame = () => {
@@ -51,7 +77,7 @@ class Game extends Component {
             movementCounter: 0,
             cards: this.getShuffledCards(),
             openCards: [],
-            missingMatches: 1//game.length
+            missingMatches: game.length
         });
     }
 
@@ -163,6 +189,16 @@ class Game extends Component {
         return pad(mins) + ':' + pad(secs);
     }
 
+    getNumberOfStars = () => {
+        if (this.state.movementCounter > 18)
+            return 1;
+        else if (this.state.movementCounter > 12)
+            return 2
+        else
+            return 3;
+
+    }
+
     render() {
         return (
             <div className="container">
@@ -172,8 +208,8 @@ class Game extends Component {
                 <section className="score-panel">
                     <ul className="stars">
                         <li><i className="fa fa-star shine"></i></li>
-                        <li><i className="fa fa-star shine"></i></li>
-                        <li><i className="fa fa-star shine"></i></li>
+                        <li><i className={"fa fa-star" + (this.getNumberOfStars() >= 2 ? " shine" : "")}></i></li>
+                        <li><i className={"fa fa-star" + (this.getNumberOfStars() >= 3 ? " shine" : "")}></i></li>
                     </ul>
                     <div className="moves">{this.state.movementCounter}<span className="counter"></span> Movimentos</div>
                     <div className="timer">{this.printEllapsedTime()}</div>
@@ -184,7 +220,11 @@ class Game extends Component {
                 <ul className="deck" id="card-deck">
                     {this.state.cards.map((card, index) => <Card key={index} text={card.text} toggle={this.handleCardClick} {...card} />)}
                 </ul>
-                {this.state.endOfGame ? (<CongratsPopUp movements={this.state.movementCounter} ellapsedTime={this.printEllapsedTime()} handlePlayAgain={this.startNewGame} />) : null}
+                <div className="game-selector">
+                    <span>Dificuldade: </span>
+                    <select onChange={this.changeGame}><option value="1">Facil</option><option value="2">Médio</option></select>
+                </div>
+                {this.state.endOfGame ? (<CongratsPopUp movements={this.state.movementCounter} stars={this.getNumberOfStars()} ellapsedTime={this.printEllapsedTime()} handlePlayAgain={this.startNewGame} />) : null}
             </div>
         );
     }
