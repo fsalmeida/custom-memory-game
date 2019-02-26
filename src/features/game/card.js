@@ -13,7 +13,7 @@ class Card extends Component {
         else if (this.props.isOpen)
             return "card open show disabled";
         else
-            return "card show";
+            return "card";
     }
 
     render() {
