@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { isMobile } from "react-device-detect";
 
 const minFontSize = isMobile ? 8 : 16;
-const maxFontSize = isMobile ? 20 : 30;
+const maxFontSize = isMobile ? 22 : 30;
 const maxWordSize = 15;
 const minWordSize = 2;
 const factor = (maxFontSize - minFontSize) / (maxWordSize - minWordSize);
