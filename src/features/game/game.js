@@ -2,40 +2,10 @@ import React, { Component } from 'react';
 import './game.scss';
 import Card from './card'
 import CongratsPopUp from './congratsPopUp'
+import gamesService from '../../services/gamesService'
 
-const games = [
-[
-    { id: 'a', text: 'clima', textTranslation: 'weather' },
-    { id: 'b', text: 'ensolarado', textTranslation: 'sunny' },
-    { id: 'c', text: 'chuvoso', textTranslation: 'rainy' },
-    { id: 'd', text: 'nublado', textTranslation: 'cloudy' },
-    { id: 'e', text: 'nebuloso', textTranslation: 'foggy' },
-    { id: 'f', text: 'tempestuoso', textTranslation: 'stormy' },
-    { id: 'g', text: 'quente', textTranslation: 'hot' },
-    { id: 'h', text: 'frio', textTranslation: 'cold' }
-],
-[
-    { id: 'a', text: 'livro', textTranslation: 'book' },
-    { id: 'b', text: 'relogio', textTranslation: 'clock' },
-    { id: 'c', text: 'parede', textTranslation: 'wall' },
-    { id: 'd', text: 'filme', textTranslation: 'movie' },
-    { id: 'e', text: 'copo', textTranslation: 'glass' },
-    { id: 'f', text: 'agua', textTranslation: 'water' },
-    { id: 'g', text: 'cerveja', textTranslation: 'beer' },
-    { id: 'h', text: 'alface', textTranslation: 'lettuce' }
-],
-[
-    { id: 'a', text: 'afobado', textTranslation: 'flustered' },
-    { id: 'b', text: 'peruca', textTranslation: 'wig' },
-    { id: 'c', text: 'horrível', textTranslation: 'awful' },
-    { id: 'd', text: 'piscar', textTranslation: 'blink' },
-    { id: 'e', text: 'grupo', textTranslation: 'cluster' },
-    { id: 'f', text: 'terrível', textTranslation: 'dreadful' },
-    { id: 'g', text: 'dedilhar', textTranslation: 'fiddle' },
-    { id: 'h', text: 'risadinha', textTranslation: 'giggle' }
-]];
-
-let game = games[0];
+let games = null;
+let game = null;
 
 class Game extends Component {
     constructor(props) {
@@ -48,7 +18,19 @@ class Game extends Component {
     }
 
     componentWillMount = () => {
-        this.startNewGame();
+        return this.loadGames().then(() => {
+            this.startNewGame();
+        });
+    }
+
+    loadGames = () => {
+        return new Promise((resolve, reject) => {
+            gamesService.fetchGames().then(gamesResult => {
+                games = gamesResult;
+                game = games[0];
+                resolve();
+            })
+        });
     }
 
     startTimer = () => {
@@ -64,7 +46,7 @@ class Game extends Component {
     }
 
     changeGame = (event) => {
-		game = games[parseInt(event.target.value)];
+        game = games[parseInt(event.target.value)];
         this.startNewGame();
     }
 
@@ -203,35 +185,38 @@ class Game extends Component {
 
     render() {
         return (
-            <div className="container">
-                <header>
-                    <h1>Jogo da Memória</h1>
-                </header>
-                <section className="score-panel">
-                    <ul className="stars">
-                        <li><i className="fa fa-star shine"></i></li>
-                        <li><i className={"fa fa-star" + (this.getNumberOfStars() >= 2 ? " shine" : "")}></i></li>
-                        <li><i className={"fa fa-star" + (this.getNumberOfStars() >= 3 ? " shine" : "")}></i></li>
+            this.state != null ? (
+                <div className="container">
+                    <header>
+                        <h1>Jogo da Memória</h1>
+                    </header>
+                    <section className="score-panel">
+                        <ul className="stars">
+                            <li><i className="fa fa-star shine"></i></li>
+                            <li><i className={"fa fa-star" + (this.getNumberOfStars() >= 2 ? " shine" : "")}></i></li>
+                            <li><i className={"fa fa-star" + (this.getNumberOfStars() >= 3 ? " shine" : "")}></i></li>
+                        </ul>
+                        <div className="moves">{this.state.movementCounter}<span className="counter"></span> Movimentos</div>
+                        <div className="timer">{this.printEllapsedTime()}</div>
+                        <div className="restart" onClick={this.startNewGame}>
+                            <i className="fa fa-repeat"></i>
+                        </div>
+                    </section>
+                    <ul className="deck" id="card-deck">
+                        {this.state.cards.map((card, index) => <Card key={index} text={card.text} toggle={this.handleCardClick} {...card} />)}
                     </ul>
-                    <div className="moves">{this.state.movementCounter}<span className="counter"></span> Movimentos</div>
-                    <div className="timer">{this.printEllapsedTime()}</div>
-                    <div className="restart" onClick={this.startNewGame}>
-                        <i className="fa fa-repeat"></i>
+                    <div className="game-selector">
+                        <span>Game: </span>
+                        <select onChange={this.changeGame}>
+                            <option value="0">1 - Easy</option>
+                            <option value="1">2 - Easy</option>
+                            <option value="2">3 - Hard</option>
+                        </select>
                     </div>
-                </section>
-                <ul className="deck" id="card-deck">
-                    {this.state.cards.map((card, index) => <Card key={index} text={card.text} toggle={this.handleCardClick} {...card} />)}
-                </ul>
-                <div className="game-selector">
-                    <span>Game: </span>
-                    <select onChange={this.changeGame}>
-						<option value="0">1 - Easy</option>
-						<option value="1">2 - Easy</option>
-						<option value="2">3 - Hard</option>
-					</select>
+                    {this.state.endOfGame ? (<CongratsPopUp movements={this.state.movementCounter} stars={this.getNumberOfStars()} ellapsedTime={this.printEllapsedTime()} handlePlayAgain={this.startNewGame} />) : null}
                 </div>
-                {this.state.endOfGame ? (<CongratsPopUp movements={this.state.movementCounter} stars={this.getNumberOfStars()} ellapsedTime={this.printEllapsedTime()} handlePlayAgain={this.startNewGame} />) : null}
-            </div>
+            )
+                : null
         );
     }
 }
