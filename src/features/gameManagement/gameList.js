@@ -33,14 +33,14 @@ class GameList extends Component {
                         <thead>
                             <tr>
                                 <th scope="col">Nome</th>
-                                <th scope="col">Ações</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Nome</td>
-                                <td>x,y</td>
-                            </tr>
+                            {this.state.games.map((g, index) => (
+                                <tr key={index}>
+                                    <td>{g.title}</td>
+                                </tr>
+                            ))}
                         </tbody>
                     </table>
                 </div>

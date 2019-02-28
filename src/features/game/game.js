@@ -61,19 +61,21 @@ class Game extends Component {
             movementCounter: 0,
             cards: this.getShuffledCards(),
             openCards: [],
-            missingMatches: game.length
+            missingMatches: 8
         });
     }
 
     getShuffledCards = () => {
-        let cards = game.reduce(function (gameCards, gameItem) {
-            gameCards.push(
-                { uid: gameItem.id + '_1', id: gameItem.id, text: gameItem.text, isOpen: false, isMatch: false, isUnmatch: false },
-                { uid: gameItem.id + '_2', id: gameItem.id, text: gameItem.textTranslation, isOpen: false, isMatch: false, isUnmatch: false }
-            );
+        let cards = this.shuffle(game)
+            .slice(0, 8)
+            .reduce(function (gameCards, gameItem) {
+                gameCards.push(
+                    { uid: gameItem.id + '_1', id: gameItem.id, text: gameItem.text, isOpen: false, isMatch: false, isUnmatch: false },
+                    { uid: gameItem.id + '_2', id: gameItem.id, text: gameItem.textTranslation, isOpen: false, isMatch: false, isUnmatch: false }
+                );
 
-            return gameCards;
-        }, []);
+                return gameCards;
+            }, []);
 
         return this.shuffle(cards);
     }

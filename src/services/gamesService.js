@@ -51,7 +51,16 @@ let gamesService = {
 
         return new Promise((resolve, reject) => {
             resolve(games);
-        })
+        });
+    },
+    addGame: (game) => {
+
+        let games = JSON.parse(localStorage.getItem("games"));
+        games.push(game);
+        localStorage.setItem("games", JSON.stringify(games));
+        return new Promise((resolve, reject) => {
+            resolve();
+        });
     }
 }
 
