@@ -27,7 +27,7 @@ class Game extends Component {
         return new Promise((resolve, reject) => {
             gamesService.fetchGames().then(gamesResult => {
                 games = gamesResult;
-                game = games[0];
+                game = games[0].game;
                 resolve();
             })
         });
@@ -46,7 +46,7 @@ class Game extends Component {
     }
 
     changeGame = (event) => {
-        game = games[parseInt(event.target.value)];
+        game = games[parseInt(event.target.value)].game;
         this.startNewGame();
     }
 
@@ -208,9 +208,7 @@ class Game extends Component {
                     <div className="game-selector">
                         <span>Game: </span>
                         <select onChange={this.changeGame}>
-                            <option value="0">1 - Easy</option>
-                            <option value="1">2 - Easy</option>
-                            <option value="2">3 - Hard</option>
+                            {games.map((g, index) => (<option key={index} value={index}>{g.title}</option>))}
                         </select>
                     </div>
                     {this.state.endOfGame ? (<CongratsPopUp movements={this.state.movementCounter} stars={this.getNumberOfStars()} ellapsedTime={this.printEllapsedTime()} handlePlayAgain={this.startNewGame} />) : null}
