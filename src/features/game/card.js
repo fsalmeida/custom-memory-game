@@ -23,6 +23,9 @@ class Card extends Component {
     }
 
     getSpanStyles = () => {
+        if (!this.props.isUnmatch && !this.props.isUnmatch && !this.props.isOpen)
+            return { fontSize: '0px' };
+
         let words = this.props.text.split(' ');
         let wordsMaxSize = Math.max(words.map(w => w.length));
         let fontSize = maxFontSize - (factor * wordsMaxSize);
