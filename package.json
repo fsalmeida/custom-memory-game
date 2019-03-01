@@ -7,6 +7,7 @@
     "node-sass": "^4.11.0",
     "react": "^16.8.3",
     "react-bootstrap": "^1.0.0-beta.5",
+    "react-chips": "^0.8.0",
     "react-device-detect": "^1.6.2",
     "react-dom": "^16.8.3",
     "react-router": "^4.3.1",

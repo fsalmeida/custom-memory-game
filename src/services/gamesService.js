@@ -1,6 +1,8 @@
 const defaultGames = [
     {
         title: '1 - Easy',
+        category: 'English',
+        subcategories: [],
         game: [
             { id: 'a', text: 'clima', textTranslation: 'weather' },
             { id: 'b', text: 'ensolarado', textTranslation: 'sunny' },
@@ -14,6 +16,8 @@ const defaultGames = [
     },
     {
         title: '2 - Easy',
+        category: 'English',
+        subcategories: [],
         game: [
             { id: 'a', text: 'livro', textTranslation: 'book' },
             { id: 'b', text: 'relogio', textTranslation: 'clock' },
@@ -27,6 +31,8 @@ const defaultGames = [
     },
     {
         title: '3 - Hard',
+        category: 'English',
+        subcategories: [],
         game: [
             { id: 'a', text: 'afobado', textTranslation: 'flustered' },
             { id: 'b', text: 'peruca', textTranslation: 'wig' },
