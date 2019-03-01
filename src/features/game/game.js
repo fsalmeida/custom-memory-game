@@ -9,11 +9,12 @@ let game = null;
 
 class Game extends Component {
     constructor(props) {
+        console.log(`criou`)
         super(props);
     }
 
     componentDidUpdate = () => {
-        if (this.state.endOfGame)
+        if (this.state && this.state.endOfGame)
             this.stopTimer();
     }
 
@@ -27,7 +28,10 @@ class Game extends Component {
         return new Promise((resolve, reject) => {
             gamesService.fetchGames().then(gamesResult => {
                 games = gamesResult;
-                game = games[0].game;
+                if (this.props.match.params.gameId == undefined)
+                    game = games[0];
+                else
+                    game = games.find(g => g.id == this.props.match.params.gameId);
                 resolve();
             })
         });
@@ -46,7 +50,7 @@ class Game extends Component {
     }
 
     changeGame = (event) => {
-        game = games[parseInt(event.target.value)].game;
+        game = games[parseInt(event.target.value)];
         this.startNewGame();
     }
 
@@ -66,7 +70,7 @@ class Game extends Component {
     }
 
     getShuffledCards = () => {
-        let cards = this.shuffle(game)
+        let cards = this.shuffle(game.game)
             .slice(0, 8)
             .reduce(function (gameCards, gameItem) {
                 gameCards.push(
@@ -190,7 +194,7 @@ class Game extends Component {
             this.state != null ? (
                 <div className="container">
                     <header>
-                        <h1>Jogo da Memória</h1>
+                        <h1>Jogo da Memória - {game.title}</h1>
                     </header>
                     <section className="score-panel">
                         <ul className="stars">

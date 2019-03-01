@@ -1,5 +1,7 @@
+const uuidv1 = require('uuid/v1');
 const defaultGames = [
     {
+        id: 'c6vb903n8umq9enq3b3276b97',
         title: '1 - Easy',
         category: 'English',
         subcategories: [],
@@ -15,6 +17,7 @@ const defaultGames = [
         ]
     },
     {
+        id: '727cb32jzk9k9x8nbc68t37xn23m',
         title: '2 - Easy',
         category: 'English',
         subcategories: [],
@@ -30,6 +33,7 @@ const defaultGames = [
         ]
     },
     {
+        id: 'h6sj7k8z9k4jcr8x6v83b79h8zj98k',
         title: '3 - Hard',
         category: 'English',
         subcategories: [],
@@ -60,12 +64,12 @@ let gamesService = {
         });
     },
     addGame: (game) => {
-
+        game.id = uuidv1();
         let games = JSON.parse(localStorage.getItem("games"));
         games.push(game);
         localStorage.setItem("games", JSON.stringify(games));
         return new Promise((resolve, reject) => {
-            resolve();
+            resolve(game);
         });
     }
 }

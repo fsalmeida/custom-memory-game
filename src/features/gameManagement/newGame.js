@@ -58,7 +58,7 @@ class NewGame extends Component {
             this.setState({ validated: true });
         }
         else {
-            this.addGame().then(() => this.props.history.push('/games'));
+            this.addGame().then(() => this.props.history.push('/'));
         }
     }
 
