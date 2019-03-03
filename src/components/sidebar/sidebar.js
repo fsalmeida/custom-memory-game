@@ -23,9 +23,8 @@ class Sidebar extends Component {
                     </div>
 
                     {this.children().filter(function (child) {
-                        return child.type.name == 'SidebarHeader'
-                            || child.type.name == 'SidebarMenu'
-                            || child.type.name == 'SidebarCustomContent';
+                        console.log(child.type.name)
+                        return child.type.name != 'SidebarFooter';
                     })}
                 </div>
 
