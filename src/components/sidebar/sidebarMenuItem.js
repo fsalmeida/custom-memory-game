@@ -15,13 +15,13 @@ class SidebarMenuItem extends Component {
 
     elementsOtherThanSubmenu = () => {
         return this.children().filter(function (child) {
-            return child.type.name != SidebarSubmenu.name;
+            return child.type != SidebarSubmenu;
         })
     }
 
     submenuItem = () => {
         let submenuItem = this.children().filter(function (child) {
-            return child.type.name == SidebarSubmenu.name;
+            return child.type == SidebarSubmenu;
         });
 
         if (submenuItem.length > 0)
