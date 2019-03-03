@@ -23,7 +23,7 @@ class Sidebar extends Component {
                     </div>
 
                     {this.children().filter(function (child) {
-                        console.log(child.type.name)
+                        console.log(child)
                         return child.type.name != 'SidebarFooter';
                     })}
                 </div>
