@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import './game.scss';
 import Card from './card'
 import CongratsPopUp from './congratsPopUp'
-import gamesService from '../../services/gamesService'
+import { connect } from 'react-redux'
 
-let games = null;
 let game = null;
 
 class Game extends Component {
@@ -12,28 +11,31 @@ class Game extends Component {
         super(props);
     }
 
+    componentWillReceiveProps = (nextProps) => {
+        if (nextProps.games !== this.props.games && nextProps.games.length > 0
+            || this.props.match.params.gameId != nextProps.match.params.gameId) {
+            this.loadCurrentGame(nextProps.games, nextProps.match.params.gameId);
+            this.startNewGame();
+        }
+    }
+
+    componentWillMount = () => {
+        if (this.props.games.length > 0) {
+            this.loadCurrentGame(this.props.games, this.props.match.params.gameId);
+            this.startNewGame();
+        }
+    }
+
     componentDidUpdate = () => {
         if (this.state && this.state.endOfGame)
             this.stopTimer();
     }
 
-    componentWillMount = () => {
-        return this.loadGames().then(() => {
-            this.startNewGame();
-        });
-    }
-
-    loadGames = () => {
-        return new Promise((resolve, reject) => {
-            gamesService.fetchGames().then(gamesResult => {
-                games = gamesResult;
-                if (this.props.match.params.gameId == undefined)
-                    game = games[0];
-                else
-                    game = games.find(g => g.id == this.props.match.params.gameId);
-                resolve();
-            })
-        });
+    loadCurrentGame = (games, gameId) => {
+        if (gameId == undefined)
+            game = games[Math.floor((Math.random() * games.length))];
+        else
+            game = games.find(g => g.id == gameId);
     }
 
     startTimer = () => {
@@ -49,7 +51,7 @@ class Game extends Component {
     }
 
     changeGame = (event) => {
-        game = games[parseInt(event.target.value)];
+        game = this.props.games[parseInt(event.target.value)];
         this.startNewGame();
     }
 
@@ -213,7 +215,7 @@ class Game extends Component {
                     <div className="game-selector">
                         <span>Game: </span>
                         <select onChange={this.changeGame}>
-                            {games.map((g, index) => (<option key={index} value={index}>{g.title}</option>))}
+                            {this.props.games.map((g, index) => (<option key={index} value={index}>{g.title}</option>))}
                         </select>
                     </div>
                     {this.state.endOfGame ? (<CongratsPopUp movements={this.state.movementCounter} stars={this.getNumberOfStars()} ellapsedTime={this.printEllapsedTime()} handlePlayAgain={this.startNewGame} />) : null}
@@ -224,4 +226,8 @@ class Game extends Component {
     }
 }
 
-export default Game;
+const mapStateToProps = ({ games }) => ({
+    games: games.games
+})
+
+export default connect(mapStateToProps)(Game)

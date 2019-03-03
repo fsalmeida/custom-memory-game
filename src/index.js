@@ -8,6 +8,7 @@ import { store, history } from './redux-cfg'
 import gamesService from './services/gamesService'
 
 gamesService.fetchGames().then(gamesResult => {
+    
     store.dispatch({ type: 'GAMES_LOADED', payload: { games: gamesResult } });
 })
 
