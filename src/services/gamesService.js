@@ -51,13 +51,21 @@ const defaultGames = [
 
 let gamesService = {
     fetchGames: () => {
-        let games = localStorage.getItem("games");
-        if (games == undefined || games == null) {
+        let setDefaultGamesToStorage = () => {
             localStorage.setItem("games", JSON.stringify(defaultGames));
             games = defaultGames;
+        };
+
+        let games = localStorage.getItem("games");
+        if (games == undefined || games == null) {
+            setDefaultGamesToStorage();
         }
         else
             games = JSON.parse(games);
+
+        if (games[0].id == undefined) {
+            setDefaultGamesToStorage();
+        }
 
         return new Promise((resolve, reject) => {
             resolve(games);
