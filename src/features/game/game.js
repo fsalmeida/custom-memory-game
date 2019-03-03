@@ -206,7 +206,7 @@ class Game extends Component {
                         <div className="moves">{this.state.movementCounter}<span className="counter"></span> Movimentos</div>
                         <div className="timer">{this.printEllapsedTime()}</div>
                         <div className="restart" onClick={this.startNewGame}>
-                            <i className="fa fa-repeat"></i>
+                            <i className="fa fa-redo"></i>
                         </div>
                     </section>
                     <ul className="deck" id="card-deck">
