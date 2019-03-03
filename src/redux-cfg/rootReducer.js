@@ -3,12 +3,12 @@ import { combineReducers } from 'redux'
 import { connectRouter } from 'connected-react-router'
 import history from './history'
 
-// import { TesteReducer } from '../features/teste'
+import GamesReducer from '../gamesReducer'
 
 const rootReducer = combineReducers({
   // oidc: oidcReducer,
-  router: connectRouter(history)
-  // teste: TesteReducer,
+  router: connectRouter(history),
+  games: GamesReducer
 })
 
 export default rootReducer
