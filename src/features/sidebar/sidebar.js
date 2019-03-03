@@ -20,10 +20,9 @@ class Sidebar extends Component {
         };
     }
 
-    componentDidUpdate = (prevProps) => {
-        if (prevProps.games !== this.props.games) {
-            this.setState({ gamesLoaded: true, filteredGames: this.findFilteredGames(this.props.games) });
-        }
+    componentWillReceiveProps = (nextProps) => {
+        if (nextProps.games !== this.props.games)
+            this.setState({ gamesLoaded: true, filteredGames: this.findFilteredGames(nextProps.games) });
     }
 
     findFilteredGames = (games) => {

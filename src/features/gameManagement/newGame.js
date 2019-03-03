@@ -3,6 +3,7 @@ import './newGame.scss';
 import { Form, Button, Row, Col } from 'react-bootstrap'
 import gamesService from '../../services/gamesService'
 import Chips, { Chip } from 'react-chips'
+import { connect } from 'react-redux'
 const uuidv1 = require('uuid/v1');
 
 class NewGame extends Component {
@@ -58,7 +59,10 @@ class NewGame extends Component {
             this.setState({ validated: true });
         }
         else {
-            this.addGame().then(() => this.props.history.push('/'));
+            this.addGame().then((game) => {
+                this.props.addGame(game);
+                this.props.history.push('/game/' + game.id);
+            });
         }
     }
 
@@ -140,4 +144,13 @@ class NewGame extends Component {
     }
 }
 
-export default NewGame;
+const mapStateToProps = state => ({})
+
+const mapDispatchToProps = dispatch => ({
+    addGame: (game) => dispatch({
+        type: "GAME_ADDED",
+        payload: { game: game }
+    })
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(NewGame);
