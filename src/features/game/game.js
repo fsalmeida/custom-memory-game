@@ -9,7 +9,6 @@ let game = null;
 
 class Game extends Component {
     constructor(props) {
-        console.log(`criou`)
         super(props);
     }
 
