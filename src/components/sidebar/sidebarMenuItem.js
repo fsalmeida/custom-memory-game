@@ -14,6 +14,7 @@ class SidebarMenuItem extends Component {
 
     elementsOtherThanSubmenu = () => {
         return this.children().filter(function (child) {
+            console.log('2: ' + child.type.name);
             return child.type.name != 'SidebarSubmenu';
         })
     }

@@ -23,7 +23,8 @@ class Sidebar extends Component {
                     </div>
 
                     {this.children().filter(function (child) {
-                        console.log(child)
+                        console.log('1: ' + SidebarMenu.name);
+                        console.log('sidebarFooterName: ' + SidebarFooter.name)
                         return child.type.name != 'SidebarFooter';
                     })}
                 </div>
