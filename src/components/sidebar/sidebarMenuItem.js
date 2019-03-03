@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import SidebarSubmenu from './sidebarSubmenu'
 
 class SidebarMenuItem extends Component {
     constructor(props) {
@@ -14,14 +15,13 @@ class SidebarMenuItem extends Component {
 
     elementsOtherThanSubmenu = () => {
         return this.children().filter(function (child) {
-            console.log('2: ' + child.type.name);
-            return child.type.name != 'SidebarSubmenu';
+            return child.type.name != SidebarSubmenu.name;
         })
     }
 
     submenuItem = () => {
         let submenuItem = this.children().filter(function (child) {
-            return child.type.name == 'SidebarSubmenu';
+            return child.type.name == SidebarSubmenu.name;
         });
 
         if (submenuItem.length > 0)
