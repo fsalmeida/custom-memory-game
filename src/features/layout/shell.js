@@ -4,6 +4,7 @@ import { Switch, Route } from "react-router-dom";
 import { Game } from "../game"
 import { GameList, NewGame } from "../gameManagement"
 import { Sidebar } from '../sidebar'
+import { Login, Logout, Callback, PrivateRoute } from '../auth'
 
 class Shell extends Component {
     constructor(props) {
@@ -29,10 +30,14 @@ class Shell extends Component {
 
                 <main className="page-content">
                     <Switch>
+                        <Route path='/auth/login' component={Login} />
+                        <Route path='/auth/logout' component={Logout} />
+                        <Route path='/auth/callback' component={Callback} />
                         <Route exact={true} path="/" component={Game} />
                         <Route path="/game/:gameId" component={Game} />
                         <Route path="/games" component={GameList} />
                         <Route path="/new-game" component={NewGame} />
+                        <PrivateRoute path="xxx" component={Game} />
                     </Switch>
                 </main>
 
