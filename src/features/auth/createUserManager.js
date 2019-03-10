@@ -35,7 +35,7 @@ class ADUserManager extends UserManager {
                 .then(signinRequest => {
                     Log.debug('got signin request')
 
-                    navigatorParams.url = signinRequest.url.replace('%20id_token', '')
+                    navigatorParams.url = signinRequest.url.replace('id_token', 'token')
                     navigatorParams.id = signinRequest.state.id
 
                     return handle.navigate(navigatorParams)
@@ -54,9 +54,9 @@ class ADUserManager extends UserManager {
 }
 
 const createUserManager = settings =>
-  new ADUserManager({
-    ...settings,
-    MetadataServiceCtor: ADMetadataService
-  })
+    new ADUserManager({
+        ...settings,
+        MetadataServiceCtor: ADMetadataService
+    })
 
 export default createUserManager

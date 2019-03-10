@@ -37,7 +37,7 @@ class Shell extends Component {
                         <Route path="/game/:gameId" component={Game} />
                         <Route path="/games" component={GameList} />
                         <Route path="/new-game" component={NewGame} />
-                        <PrivateRoute path="xxx" component={Game} />
+                        <PrivateRoute path="/xxx" component={Game} />
                     </Switch>
                 </main>
 
