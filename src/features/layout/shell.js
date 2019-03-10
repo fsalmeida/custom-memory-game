@@ -5,6 +5,7 @@ import { Game } from "../game"
 import { GameList, NewGame } from "../gameManagement"
 import { Sidebar } from '../sidebar'
 import { Login, Logout, Callback, PrivateRoute } from '../auth'
+import { connect } from 'react-redux'
 
 class Shell extends Component {
     constructor(props) {
@@ -20,30 +21,38 @@ class Shell extends Component {
     }
 
     render() {
-        return (
-            <div className={"page-wrapper chiller-theme" + (this.state.isMenuOpen ? ' toggled' : '')}>
-                <a id="show-sidebar" className="btn btn-sm btn-dark" href="#" onClick={this.toggle}>
-                    <i className="fas fa-bars"></i>
-                </a>
+        return this.props.oidc.isLoadingUser
+            ? (<div>Carregando..</div>)
+            : (
+                <div className={"page-wrapper chiller-theme" + (this.state.isMenuOpen ? ' toggled' : '')}>
+                    <a id="show-sidebar" className="btn btn-sm btn-dark" href="#" onClick={this.toggle}>
+                        <i className="fas fa-bars"></i>
+                    </a>
 
-                <Sidebar isOpen={this.state.isMenuOpen} toggle={this.toggle} />
+                    <Sidebar isOpen={this.state.isMenuOpen} toggle={this.toggle} />
 
-                <main className="page-content">
-                    <Switch>
-                        <Route path='/auth/login' component={Login} />
-                        <Route path='/auth/logout' component={Logout} />
-                        <Route path='/auth/callback' component={Callback} />
-                        <Route exact={true} path="/" component={Game} />
-                        <Route path="/game/:gameId" component={Game} />
-                        <Route path="/games" component={GameList} />
-                        <Route path="/new-game" component={NewGame} />
-                        <PrivateRoute path="/xxx" component={Game} />
-                    </Switch>
-                </main>
+                    <main className="page-content">
+                        <Switch>
+                            <Route path='/auth/login' component={Login} />
+                            <Route path='/auth/logout' component={Logout} />
+                            <Route path='/auth/callback' component={Callback} />
+                            <Route exact={true} path="/" component={Game} />
+                            <Route path="/game/:gameId" component={Game} />
+                            <Route path="/games" component={GameList} />
+                            <Route path="/new-game" component={NewGame} />
+                            <PrivateRoute path="/xxx" component={Game} />
+                        </Switch>
+                    </main>
 
-            </div>
-        );
+                </div>
+            );
     }
 }
 
-export default Shell
+const mapStateToProps = state => ({
+    oidc: state.oidc
+})
+
+export default connect(
+    mapStateToProps
+)(Shell)
